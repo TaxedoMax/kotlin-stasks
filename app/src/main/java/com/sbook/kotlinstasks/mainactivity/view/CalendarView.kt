@@ -24,7 +24,10 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarView(calendarViewModel: CalendarViewModel = viewModel()) {
+fun CalendarView(
+    calendarViewModel: CalendarViewModel = viewModel(),
+    onDaySelected: (LocalDate) -> Unit
+) {
     val days by calendarViewModel.days.collectAsState()
     val selectedDay by calendarViewModel.selectedDay.collectAsState()
     val currentMonth by calendarViewModel.currentMonth.collectAsState()
@@ -85,7 +88,10 @@ fun CalendarView(calendarViewModel: CalendarViewModel = viewModel()) {
                     day = day,
                     isSelected = day == selectedDay,
                     isToday = day == LocalDate.now(),
-                    onClick = { calendarViewModel.onDaySelected(day) }
+                    onClick = {
+                        calendarViewModel.onDaySelected(day)
+                        onDaySelected(day)
+                    }
                 )
             }
         }
